@@ -9,6 +9,7 @@ interface State {
   loading: boolean;
   page: number;
   search: string;
+  package: Item | null;
 }
 export const packageStore = {
   state(): State {
@@ -16,12 +17,16 @@ export const packageStore = {
       loading: true,
       page: 1,
       list: [],
+      package: null,
       search: "",
     };
   },
   mutations: {
     setList(state: State, value: Item[]): void {
       state.list = value;
+    },
+    setPackage(state: State, value: Item | null): void {
+      state.package = value;
     },
     setLoading(state: State, value: boolean): void {
       state.loading = value;
@@ -36,8 +41,8 @@ export const packageStore = {
   getters: {
     paginatedList(state: State): Item[] {
       const copyList = [...state.list];
-      const filteredList = copyList;
-      return filteredList.splice((state.page - 1) * PACKAGE_ON_PAGE, PACKAGE_ON_PAGE);
+      const filteredList = copyList.filter((pacakge) => pacakge.name.match(state.search));
+      return state.package ? [state.package] : filteredList.splice((state.page - 1) * PACKAGE_ON_PAGE, PACKAGE_ON_PAGE);
     },
   },
 };
