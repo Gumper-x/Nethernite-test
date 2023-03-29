@@ -1,9 +1,9 @@
 <template>
-  <v-table density="compact">
+  <v-table density="compact" class="package-table">
     <thead>
       <tr>
         <th class="text-left"> Name </th>
-        <th class="text-left"> Calories </th>
+        <th class="text-left"> Type </th>
       </tr>
     </thead>
     <tbody>
@@ -19,5 +19,17 @@
   import { computed } from "vue";
   import { useStore } from "vuex";
   const store = useStore();
-  const list = computed(() => store.state.package.list);
+  const list = computed(() => store.getters.paginatedList);
 </script>
+
+<style lang="scss">
+  .package-table {
+    tr {
+      transition: background-color 0.2s ease-in;
+      &:hover {
+        cursor: pointer;
+        background-color: rgba($primary, 0.1);
+      }
+    }
+  }
+</style>
