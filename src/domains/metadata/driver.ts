@@ -4,8 +4,8 @@ import { MetadataPort } from "./port";
 
 export function useMetadata(): MetadataPort {
   return {
-    getPackage(name) {
-      return httpClient.get(`${MetadataPath.PACKAGE}${name}`);
+    async getPackage(name) {
+      return (await httpClient.get(`${MetadataPath.PACKAGE}${name}`)).data;
     },
   };
 }
