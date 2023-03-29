@@ -37,7 +37,7 @@
     &__container {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1rem;
     }
   }
 </style>
