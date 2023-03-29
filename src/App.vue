@@ -2,7 +2,11 @@
   <div class="app">
     <div class="app__container">
       <PackageSearch />
-      <PackageTable />
+      <transition name="scale" mode="out-in">
+        <PackageTableSkeleton v-if="store.state.package.loading" />
+        <PackageTable v-else />
+      </transition>
+      <PackagePaginator />
     </div>
     <Footer />
   </div>
@@ -12,16 +16,18 @@
   import PackageSearch from "@/components/PackageSearch.vue";
   import PackageTable from "@/components/PackageTable.vue";
   import Footer from "@/components/Footer.vue";
+  import PackagePaginator from "@/components/PackagePaginator.vue";
+  import PackageTableSkeleton from "@/components/PackageTableSkeleton.vue";
   import { onBeforeMount } from "vue";
   import { injectStrict } from "@/utils";
   import { DI_KEY } from "@/constants";
   import { useStore } from "vuex";
-  import { initTopList } from "@/domains";
+  import { setTopList } from "@/domains";
 
   const di = injectStrict(DI_KEY);
   const store = useStore();
-  onBeforeMount(async () => {
-    initTopList(store, await di.statsDomain.getTopList());
+  onBeforeMount(() => {
+    setTopList(store, di.statsDomain.getTopList);
   });
 </script>
 
@@ -33,7 +39,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
+    min-height: 100vh;
+    gap: 1rem;
     &__container {
       display: flex;
       flex-direction: column;
