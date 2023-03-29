@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in list" :key="item.name">
+      <tr v-for="item in list" :key="item.name" @click="emit('click-package', item.name)">
         <td>{{ item.name }}</td>
         <td>{{ item.type }}</td>
       </tr>
@@ -18,6 +18,7 @@
 <script lang="ts" setup>
   import { computed } from "vue";
   import { useStore } from "vuex";
+  const emit = defineEmits(["click-package"]);
   const store = useStore();
   const list = computed(() => store.getters.paginatedList);
 </script>

@@ -4,8 +4,9 @@
       <PackageSearch />
       <transition name="scale" mode="out-in">
         <PackageTableSkeleton v-if="store.state.package.loading" />
-        <PackageTable v-else />
+        <PackageTable v-else @click-package="handleClickPackage" />
       </transition>
+      <PackageDetail v-if="showDetail" :name="namePackage" @close="showDetail = false" />
       <PackagePaginator />
     </div>
     <Footer />
@@ -18,14 +19,21 @@
   import Footer from "@/components/Footer.vue";
   import PackagePaginator from "@/components/PackagePaginator.vue";
   import PackageTableSkeleton from "@/components/PackageTableSkeleton.vue";
-  import { onBeforeMount } from "vue";
+  import { onBeforeMount, ref } from "vue";
   import { injectStrict } from "@/utils";
   import { DI_KEY } from "@/constants";
   import { useStore } from "vuex";
   import { setTopList } from "@/domains";
+  import PackageDetail from "./components/PackageDetail.vue";
 
   const di = injectStrict(DI_KEY);
   const store = useStore();
+  const namePackage = ref("");
+  const showDetail = ref(false);
+  function handleClickPackage(name: string) {
+    namePackage.value = name;
+    showDetail.value = true;
+  }
   onBeforeMount(() => {
     setTopList(store, di.statsDomain.getTopList);
   });
@@ -33,8 +41,10 @@
 
 <style lang="scss">
   .app {
+    padding: 0 2rem;
     padding-top: 3rem;
-    width: 600px;
+    width: 100%;
+    max-width: 600px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;

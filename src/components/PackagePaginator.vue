@@ -4,6 +4,7 @@
     :value="1"
     :total-visible="5"
     :length="maxPage"
+    size="2rem"
     @update:model-value="onChangePage"
   ></v-pagination>
 </template>
@@ -15,7 +16,7 @@
 
   const store = useStore();
   const maxPage = computed(() => store.state.package.list.length / PACKAGE_ON_PAGE);
-  const showPaginator = computed(() => maxPage.value >= PACKAGE_ON_PAGE);
+  const showPaginator = computed(() => maxPage.value >= PACKAGE_ON_PAGE && !store.state.package.package);
   async function onChangePage(page: number) {
     store.commit("setPage", page);
   }

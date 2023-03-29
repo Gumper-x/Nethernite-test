@@ -27,7 +27,7 @@
     if (timer) {
       clearTimeout(timer);
     }
-    timer = window.setTimeout(trigerSearch.bind(null, text), 1000);
+    timer = window.setTimeout(trigerSearch.bind(null, text), 500);
   }
   async function trigerSearch(text: string) {
     try {

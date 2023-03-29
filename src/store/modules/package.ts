@@ -41,8 +41,13 @@ export const packageStore = {
   getters: {
     paginatedList(state: State): Item[] {
       const copyList = [...state.list];
-      const filteredList = copyList.filter((pacakge) => pacakge.name.match(state.search));
-      return state.package ? [state.package] : filteredList.splice((state.page - 1) * PACKAGE_ON_PAGE, PACKAGE_ON_PAGE);
+      const filteredList = copyList.filter(
+        (packageItem) => packageItem.name.match(state.search) && packageItem.name !== state.package?.name
+      );
+      if (state.package) {
+        filteredList.push(state.package);
+      }
+      return filteredList.splice((state.page - 1) * PACKAGE_ON_PAGE, PACKAGE_ON_PAGE);
     },
   },
 };
